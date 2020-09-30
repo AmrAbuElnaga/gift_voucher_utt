@@ -1,7 +1,10 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:giftvoucher/Network/Api_Call.dart';
 import 'package:giftvoucher/auth/verfication_code/ui/verfication_code.dart';
+import 'package:giftvoucher/widget/progress_dialog.dart';
+import 'package:toast/toast.dart';
 
 class forget_pass extends StatefulWidget {
   @override
@@ -95,7 +98,10 @@ class forget_pass_state extends State<forget_pass> {
                 width: MediaQuery.of(context).size.width * 1.2 / 3,
                 child: RaisedButton(
                   onPressed: () {
-                    go_verfication_code(context);
+                    //LOADING PROGRESS DIALOG
+                    progress_dialog().show_dialog(context);
+                    //CALL API
+                    go_verfication_code(context, emailController.text);
                   },
                   color: Colors.white,
                   child: AutoSizeText(
@@ -112,11 +118,29 @@ class forget_pass_state extends State<forget_pass> {
   }
 
   //METHOD TO Go VERFICATION CODE
-  go_verfication_code(BuildContext context) {
-    //GO TO NEXT PAGE AND DELETE PATHS
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (context) => verfication_code()),
-    );
+  go_verfication_code(BuildContext context, String email) {
+    Api_Call().forget_pass(email).then((value) {
+      //STOP DIALOG
+      progress_dialog().dismiss_dialog(context);
+      //GO TO NEXT PAGE AND DELETE PATHS
+      if (value['status'] == 1) {
+        Toast.show('We have e-mailed you a verification code!', context,
+            duration: Toast.LENGTH_SHORT,
+            gravity: Toast.BOTTOM,
+            backgroundColor: Colors.green);
+
+        // GO TO VERFICAION CODE PAGE
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => verfication_code()),
+        );
+      } else if (value['status'] == 2) {
+        //EMAIL NOT FOUND
+        Toast.show('We cant find a user with that e-mail address', context,
+            duration: Toast.LENGTH_SHORT,
+            gravity: Toast.BOTTOM,
+            backgroundColor: Colors.orange);
+      }
+    });
   }
 }

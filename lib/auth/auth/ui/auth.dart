@@ -1,7 +1,15 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:giftvoucher/Network/Api_Call.dart';
+import 'package:giftvoucher/auth/auth/model/Body.dart';
+import 'package:giftvoucher/auth/auth/model/User.dart';
+import 'package:giftvoucher/auth/auth/model/root_login.dart';
+import 'package:giftvoucher/auth/auth/ui/successful_login.dart';
 import 'package:giftvoucher/auth/forget_pass/ui/forget_pass.dart';
+import 'package:giftvoucher/local_data/send_data.dart';
+import 'package:giftvoucher/widget/progress_dialog.dart';
+import 'package:toast/toast.dart';
 
 enum AuthMode { Signup, Login }
 
@@ -19,15 +27,29 @@ class auth_state extends State<auth> {
   TextEditingController phoneController = new TextEditingController();
   TextEditingController userController = new TextEditingController();
   TextEditingController passController = new TextEditingController();
+  TextEditingController commercialController = new TextEditingController();
+  int _value = 1;
+  root_login root;
+
+  Body body;
+  User user;
 
   void _switchAuthMode() {
     if (_authMode == AuthMode.Login) {
       setState(() {
         _authMode = AuthMode.Signup;
+        userController.text = "";
+        passController.text = "";
       });
     } else {
       setState(() {
         _authMode = AuthMode.Login;
+        userController.text = "";
+        passController.text = "";
+        emailController.text = "";
+        phoneController.text = "";
+        _value = 1;
+        commercialController.text = "";
       });
     }
   }
@@ -82,39 +104,38 @@ class auth_state extends State<auth> {
               child: auth_design(),
             ),
           ),
-          if(_authMode == AuthMode.Signup)
-          Positioned(
-            top: MediaQuery.of(context).size.height * .85 / 3,
-            right: MediaQuery.of(context).size.width * .4 / 3,
-            child: GestureDetector(
-              onTap: ()
-              {
-                _switchAuthMode();
-              },
-              child: Padding(
-                padding: const EdgeInsets.only(top: 15.0),
-                child: Center(
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(30.0),
-                    child: Container(
-                      padding: EdgeInsets.all(15.0),
-                      color: Colors.white,
-                      width: 60,
-                      height: 60,
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Image.asset(
-                          'images/back_one.png',
-                          width: 15,
-                          height: 15.0,
+          if (_authMode == AuthMode.Signup)
+            Positioned(
+              top: MediaQuery.of(context).size.height * .85 / 3,
+              right: MediaQuery.of(context).size.width * .4 / 3,
+              child: GestureDetector(
+                onTap: () {
+                  _switchAuthMode();
+                },
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 15.0),
+                  child: Center(
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(30.0),
+                      child: Container(
+                        padding: EdgeInsets.all(15.0),
+                        color: Colors.white,
+                        width: 60,
+                        height: 60,
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Image.asset(
+                            'images/back_one.png',
+                            width: 15,
+                            height: 15.0,
+                          ),
                         ),
                       ),
                     ),
                   ),
                 ),
               ),
-            ),
-          )
+            )
         ],
       ),
     );
@@ -153,9 +174,9 @@ class auth_state extends State<auth> {
           Padding(
             padding: const EdgeInsets.only(right: 20.0, left: 20.0, top: 20.0),
             child: TextFormField(
-              controller: emailController,
+              controller: passController,
               keyboardType: TextInputType.visiblePassword,
-              obscureText: false,
+              obscureText: true,
               decoration: InputDecoration(
                 suffixIcon: Icon(Icons.lock),
                 enabledBorder: UnderlineInputBorder(
@@ -202,15 +223,59 @@ class auth_state extends State<auth> {
                 ),
               ),
             ),
+          if (_authMode == AuthMode.Signup)
+            Padding(
+              padding:
+                  const EdgeInsets.only(right: 20.0, left: 20.0, top: 20.0),
+              child: DropdownButton(
+                isExpanded: true,
+                value: _value,
+                items: [
+                  DropdownMenuItem(
+                    child: Text("Choose Type"),
+                    value: 1,
+                  ),
+                  DropdownMenuItem(
+                    child: Text("User"),
+                    value: 2,
+                  ),
+                  DropdownMenuItem(child: Text("Company"), value: 3),
+                ],
+                onChanged: (value) {
+                  setState(() {
+                    _value = value;
+                  });
+                },
+              ),
+            ),
+          if (_authMode == AuthMode.Signup)
+            if (_value == 3)
+              Padding(
+                padding:
+                    const EdgeInsets.only(right: 20.0, left: 20.0, top: 20.0),
+                child: TextFormField(
+                  controller: commercialController,
+                  keyboardType: TextInputType.text,
+                  obscureText: false,
+                  decoration: InputDecoration(
+                    suffixIcon: Icon(Icons.account_balance),
+                    enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                      color: Colors.grey,
+                    )),
+                    hintText: 'Commercial Register',
+                  ),
+                ),
+              ),
           if (_authMode == AuthMode.Login)
             Padding(
               padding: const EdgeInsets.only(right: 20.0, top: 15.0),
               child: Align(
                   alignment: Alignment.topRight,
                   child: GestureDetector(
-                      onTap: ()
-                      {
-                       forget_password(context); //CALL GO TO FORGET PASSWORD METHOD
+                      onTap: () {
+                        forget_password(
+                            context); //CALL GO TO FORGET PASSWORD METHOD
                       },
                       child: AutoSizeText('Forget Password'))),
             ),
@@ -218,19 +283,26 @@ class auth_state extends State<auth> {
             Padding(
               padding: const EdgeInsets.only(top: 15.0),
               child: Center(
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(35.0),
-                  child: Container(
-                    padding: EdgeInsets.all(15.0),
-                    color: Colors.white,
-                    width: 70,
-                    height: 70,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Image.asset(
-                        'images/back.png',
-                        width: 15,
-                        height: 15.0,
+                child: GestureDetector(
+                  onTap: () {
+                    progress_dialog().show_dialog(context);
+                    login_response(
+                        userController.text, passController.text, context);
+                  },
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(35.0),
+                    child: Container(
+                      padding: EdgeInsets.all(15.0),
+                      color: Colors.white,
+                      width: 70,
+                      height: 70,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Image.asset(
+                          'images/back.png',
+                          width: 15,
+                          height: 15.0,
+                        ),
                       ),
                     ),
                   ),
@@ -239,18 +311,29 @@ class auth_state extends State<auth> {
             )
           else
             Center(
-              child: Container(
-                margin: EdgeInsets.all(30.0),
-                width: MediaQuery.of(context).size.width * 1 / 3,
-                height: 50.0,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(8.0),
-                  child: FlatButton(
-                    color: Theme.of(context).accentColor,
-                    onPressed: () {
-                      _switchAuthMode();
-                    },
-                    child: AutoSizeText('Signup'),
+              child: Padding(
+                padding: EdgeInsets.only(bottom: 30),
+                child: Container(
+                  margin: EdgeInsets.all(10.0),
+                  width: MediaQuery.of(context).size.width * 1 / 3,
+                  height: 50.0,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(8.0),
+                    child: FlatButton(
+                      color: Theme.of(context).accentColor,
+                      onPressed: () {
+                        progress_dialog().show_dialog(context);
+                        signup_response(
+                            userController.text,
+                            passController.text,
+                            emailController.text,
+                            phoneController.text,
+                            commercialController.text,
+                            '${_value}',
+                            context);
+                      },
+                      child: AutoSizeText('Signup'),
+                    ),
                   ),
                 ),
               ),
@@ -304,5 +387,58 @@ class auth_state extends State<auth> {
         ],
       ),
     );
+  }
+
+  //CALL LOGIN API
+  void login_response(String username, String password, BuildContext context) {
+    Api_Call().login(username, password).then((value) {
+      //STOP DIALOG
+      progress_dialog().dismiss_dialog(context);
+
+      if (value['status'] == 1) {
+        //GET ROOT CLASS
+        root = root_login.fromJSON(value);
+        //GET BODY
+        body = Body.fromJSON(root.body);
+        //GET USER
+        user = User.fromJSON(body.user);
+        // SAVE DATA IN SHAREDPREFRENCE
+        send_data().save_user_data('${user.id}', user.username, user.email,
+            user.phone, body.accessToken);
+        successful_login().show_dialog(context);
+      } else if (value['status'] == 0) {
+        root = root_login.fromJSON(value);
+        Toast.show('${root.message}', context,
+            duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
+      }
+    });
+  }
+
+  //CALL SIGNUP API
+  void signup_response(String username, String password, String email,
+      String phone, String tax, String role, BuildContext context) {
+    Api_Call()
+        .signup(username, password, phone, role, email, tax)
+        .then((value) {
+//STOP DIALOG
+      progress_dialog().dismiss_dialog(context);
+
+      if (value['status'] == 1) {
+        //GET ROOT CLASS
+        root = root_login.fromJSON(value);
+        //GET BODY
+        body = Body.fromJSON(root.body);
+        //GET USER
+        user = User.fromJSON(body.user);
+        // SAVE DATA IN SHAREDPREFRENCE
+        send_data().save_user_data('${user.id}', user.username, user.email,
+            user.phone, body.accessToken);
+        successful_login().show_dialog(context);
+      } else if (value['status'] == 0) {
+        root = root_login.fromJSON(value);
+        Toast.show('${root.message}', context,
+            duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
+      }
+    });
   }
 }

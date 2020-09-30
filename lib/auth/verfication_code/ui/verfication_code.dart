@@ -57,6 +57,29 @@ class verfication_code_state extends State<verfication_code> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
                             Container(
+                              alignment: Alignment.center,
+                              width: 40.0,
+                              height: 40.0,
+                              decoration: BoxDecoration(
+                                  borderRadius: new BorderRadius.circular(10.0),
+                                  border: Border.all(
+                                    width: 1,
+                                    color: Colors.grey,
+                                  )),
+                              child: Center(
+                                child: TextFormField(
+                                  maxLength: 1,
+                                  keyboardType: TextInputType.number,
+                                  decoration: new InputDecoration(
+                                    enabledBorder: InputBorder.none,
+                                    border: InputBorder.none,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Container(
+                              alignment: Alignment.center,
+                              margin: EdgeInsets.only(left: 8.0),
                               width: 40.0,
                               height: 40.0,
                               decoration: BoxDecoration(
@@ -66,8 +89,10 @@ class verfication_code_state extends State<verfication_code> {
                                     color: Colors.grey,
                                   )),
                               child: TextFormField(
+                                keyboardType: TextInputType.number,
                                 decoration: new InputDecoration(
                                   enabledBorder: InputBorder.none,
+                                  border: InputBorder.none,
                                 ),
                               ),
                             ),
@@ -82,8 +107,10 @@ class verfication_code_state extends State<verfication_code> {
                                     color: Colors.grey,
                                   )),
                               child: TextFormField(
+                                keyboardType: TextInputType.number,
                                 decoration: new InputDecoration(
                                   enabledBorder: InputBorder.none,
+                                  border: InputBorder.none,
                                 ),
                               ),
                             ),
@@ -98,24 +125,10 @@ class verfication_code_state extends State<verfication_code> {
                                     color: Colors.grey,
                                   )),
                               child: TextFormField(
+                                keyboardType: TextInputType.number,
                                 decoration: new InputDecoration(
                                   enabledBorder: InputBorder.none,
-                                ),
-                              ),
-                            ),
-                            Container(
-                              margin: EdgeInsets.only(left: 8.0),
-                              width: 40.0,
-                              height: 40.0,
-                              decoration: BoxDecoration(
-                                  borderRadius: new BorderRadius.circular(10.0),
-                                  border: Border.all(
-                                    width: 1,
-                                    color: Colors.grey,
-                                  )),
-                              child: TextFormField(
-                                decoration: new InputDecoration(
-                                  enabledBorder: InputBorder.none,
+                                  border: InputBorder.none,
                                 ),
                               ),
                             ),
