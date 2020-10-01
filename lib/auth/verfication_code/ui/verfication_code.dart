@@ -13,6 +13,8 @@ class verfication_code extends StatefulWidget {
 class verfication_code_state extends State<verfication_code> {
   @override
   Widget build(BuildContext context) {
+    final focus = FocusNode();
+
     // TODO: implement build
     return Scaffold(
       backgroundColor: const Color(0xffFDFDFE),
@@ -68,12 +70,22 @@ class verfication_code_state extends State<verfication_code> {
                                   )),
                               child: Center(
                                 child: TextFormField(
+                                  showCursor: true,
+                                  textInputAction: TextInputAction.next,
+                                  autofocus: true,
+                                  textAlign: TextAlign.center,
                                   maxLength: 1,
                                   keyboardType: TextInputType.number,
                                   decoration: new InputDecoration(
                                     enabledBorder: InputBorder.none,
                                     border: InputBorder.none,
+                                    labelText: "Input 1",
+                                    contentPadding: new EdgeInsets.symmetric(
+                                        vertical: 8.0, horizontal: 10.0),
                                   ),
+                                  onFieldSubmitted: (v) {
+                                    FocusScope.of(context).requestFocus(focus);
+                                  },
                                 ),
                               ),
                             ),
@@ -89,10 +101,19 @@ class verfication_code_state extends State<verfication_code> {
                                     color: Colors.grey,
                                   )),
                               child: TextFormField(
+                                focusNode: focus,
+                                showCursor: true,
+                                textInputAction: TextInputAction.next,
+                                autofocus: true,
+                                textAlign: TextAlign.center,
+                                maxLength: 1,
                                 keyboardType: TextInputType.number,
                                 decoration: new InputDecoration(
                                   enabledBorder: InputBorder.none,
                                   border: InputBorder.none,
+                                  labelText: "Input 1",
+                                  contentPadding: new EdgeInsets.symmetric(
+                                      vertical: 8.0, horizontal: 10.0),
                                 ),
                               ),
                             ),
@@ -107,10 +128,17 @@ class verfication_code_state extends State<verfication_code> {
                                     color: Colors.grey,
                                   )),
                               child: TextFormField(
+                                showCursor: true,
+                                textInputAction: TextInputAction.next,
+                                autofocus: true,
+                                textAlign: TextAlign.center,
+                                maxLength: 1,
                                 keyboardType: TextInputType.number,
                                 decoration: new InputDecoration(
                                   enabledBorder: InputBorder.none,
                                   border: InputBorder.none,
+                                  contentPadding: new EdgeInsets.symmetric(
+                                      vertical: 8.0, horizontal: 10.0),
                                 ),
                               ),
                             ),
@@ -125,10 +153,17 @@ class verfication_code_state extends State<verfication_code> {
                                     color: Colors.grey,
                                   )),
                               child: TextFormField(
+                                showCursor: true,
+                                textInputAction: TextInputAction.next,
+                                textAlign: TextAlign.center,
+                                maxLength: 1,
                                 keyboardType: TextInputType.number,
                                 decoration: new InputDecoration(
                                   enabledBorder: InputBorder.none,
                                   border: InputBorder.none,
+                                  labelText: "Input 1",
+                                  contentPadding: new EdgeInsets.symmetric(
+                                      vertical: 8.0, horizontal: 10.0),
                                 ),
                               ),
                             ),
