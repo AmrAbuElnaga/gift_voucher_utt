@@ -147,7 +147,7 @@ class auth_state extends State<auth> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Padding(
-            padding: const EdgeInsets.only(top: 40.0, left: 20.0),
+            padding: const EdgeInsets.only(top: 60.0, left: 20.0),
             child: AutoSizeText(
               '${_authMode == AuthMode.Login ? 'Lets Login' : 'Sign Up'}',
               style: TextStyle(
@@ -285,8 +285,7 @@ class auth_state extends State<auth> {
               child: Center(
                 child: GestureDetector(
                   onTap: () {
-                    progress_dialog().show_dialog(context);
-                    login_response(
+                    checkLogin(
                         userController.text, passController.text, context);
                   },
                   child: ClipRRect(
@@ -322,8 +321,7 @@ class auth_state extends State<auth> {
                     child: FlatButton(
                       color: Theme.of(context).accentColor,
                       onPressed: () {
-                        progress_dialog().show_dialog(context);
-                        signup_response(
+                        checkSignUp(
                             userController.text,
                             passController.text,
                             emailController.text,
@@ -389,6 +387,19 @@ class auth_state extends State<auth> {
     );
   }
 
+  //LOGIN VALIDATION
+  void checkLogin(String username, String password, BuildContext context) {
+    if ((username.length < 5) || (password.length < 5)) {
+      Toast.show('Please Fill All Data !', context,
+          duration: Toast.LENGTH_SHORT,
+          gravity: Toast.BOTTOM,
+          backgroundColor: Colors.orange);
+    } else {
+      progress_dialog().show_dialog(context);
+      login_response(username, password, context);
+    }
+  }
+
   //CALL LOGIN API
   void login_response(String username, String password, BuildContext context) {
     Api_Call().login(username, password).then((value) {
@@ -403,7 +414,7 @@ class auth_state extends State<auth> {
         //GET USER
         user = User.fromJSON(body.user);
         // SAVE DATA IN SHAREDPREFRENCE
-        send_data().save_user_data('${user.id}', user.username, user.email,
+        send_data    ().save_user_data('${user.id}', user.username, user.email,
             user.phone, body.accessToken);
         successful_login().show_dialog(context);
       } else if (value['status'] == 0) {
@@ -414,13 +425,42 @@ class auth_state extends State<auth> {
     });
   }
 
+  //SIGN UP VALIDATION
+  void checkSignUp(String username, String password, String email, String phone,
+      String tax, String role, BuildContext context) {
+    if ((username.length < 5) ||
+        (password.length < 5) ||
+        (email.length < 5) ||
+        (phone.length < 5)) {
+      Toast.show('Please Fill All Data !', context,
+          duration: Toast.LENGTH_SHORT,
+          gravity: Toast.BOTTOM,
+          backgroundColor: Colors.orange);
+    } else if (role == "1") {
+      Toast.show('You Must Choose User Or Company !', context,
+          duration: Toast.LENGTH_SHORT,
+          gravity: Toast.BOTTOM,
+          backgroundColor: Colors.orange);
+    } else {
+      if (tax.length == 0) {
+        Toast.show('Please Insert Commercial Register !', context,
+            duration: Toast.LENGTH_SHORT,
+            gravity: Toast.BOTTOM,
+            backgroundColor: Colors.orange);
+      } else {
+        progress_dialog().show_dialog(context);
+        signup_response(username, password, email, phone, tax, role, context);
+      }
+    }
+  }
+
   //CALL SIGNUP API
   void signup_response(String username, String password, String email,
       String phone, String tax, String role, BuildContext context) {
     Api_Call()
         .signup(username, password, phone, role, email, tax)
         .then((value) {
-//STOP DIALOG
+      //STOP DIALOG
       progress_dialog().dismiss_dialog(context);
 
       if (value['status'] == 1) {

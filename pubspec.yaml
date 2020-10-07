@@ -58,6 +58,7 @@ flutter:
     - images/back.png
     - images/signup_bg.png
     - images/back_one.png
+    - images/cart.png
     - images/forget_pass_img.png
     - images/verfication_code.png
     - animation/login.json

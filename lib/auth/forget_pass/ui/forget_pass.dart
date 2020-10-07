@@ -132,7 +132,7 @@ class forget_pass_state extends State<forget_pass> {
         // GO TO VERFICAION CODE PAGE
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => verfication_code()),
+          MaterialPageRoute(builder: (context) => verfication_code(email)),
         );
       } else if (value['status'] == 2) {
         //EMAIL NOT FOUND

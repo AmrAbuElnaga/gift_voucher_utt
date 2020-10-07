@@ -5,9 +5,9 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:giftvoucher/auth/auth/ui/animation_widget.dart';
-import 'package:giftvoucher/homeScreen/homeScreen.dart';
+import 'package:giftvoucher/auth/auth/ui/auth.dart';
 
-class successful_login {
+class successful_pass_rest {
   void show_dialog(BuildContext context) {
     showGeneralDialog(
       context: context,
@@ -28,7 +28,7 @@ class successful_login {
               children: <Widget>[
                 animation_widget(),
                 AutoSizeText(
-                  'Successful Login...',
+                  'Changed Successfully...',
                   style: TextStyle(
                       color: Colors.black,
                       fontSize: 22,
@@ -40,12 +40,12 @@ class successful_login {
         );
       },
     );
-
+    //GIVE TIME AND GO TO AUTHENTECATION
     Timer(Duration(seconds: 3), () {
       // 5s over, navigate to a new page
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => homeScreen()),
+        MaterialPageRoute(builder: (context) => auth()),
       );
     });
   }

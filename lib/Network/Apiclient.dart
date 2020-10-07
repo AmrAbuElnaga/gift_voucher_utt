@@ -15,9 +15,9 @@ class Apiclient {
 
   static String forget_pass = '${Base_url}password/create';
 
-  static String get_all_doctors = '${Base_url}Doctor/getAll/';
+  static String RESET_PASS = '${Base_url}password/find/?code=';
 
-  static String get_search_doctors = '${Base_url}Search/index/';
+  static String changeNewPass = '${Base_url}password/reset';
 
   static String doctor_details = '${Base_url}Doctor/view/';
 
