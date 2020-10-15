@@ -5,7 +5,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:giftvoucher/auth/auth/ui/animation_widget.dart';
-import 'package:giftvoucher/homeScreen/homeScreen.dart';
+import 'file:///D:/amrandroidproject/gift_voucher_utt/lib/homeScreen/ui/homeScreen.dart';
 
 class successful_login {
   void show_dialog(BuildContext context) {

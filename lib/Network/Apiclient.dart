@@ -19,7 +19,7 @@ class Apiclient {
 
   static String changeNewPass = '${Base_url}password/reset';
 
-  static String doctor_details = '${Base_url}Doctor/view/';
+  static String allCompanies = '${Base_url}company/all';
 
   static String doctor_search = '${Base_url}Doctor/getAll/';
 

@@ -20,7 +20,7 @@ class Api_Call {
         '${Apiclient.login}', someMap);
   }
 
-  ///SIGNUP
+  ///SIGN UP
   Future<dynamic> signup(String username, String password, String phone,
       String role, String email, String tax) async {
     print('wd778${Apiclient.sign_up}');
@@ -49,7 +49,7 @@ class Api_Call {
         '${Apiclient.forget_pass}', someMap);
   }
 
-  ///VERIFCATION CODE
+  ///VERIFICATION CODE
   Future<dynamic> verfication_code(String code) async {
     return await _Api_Router.Perform_Request('${Apiclient.RESET_PASS}$code');
   }
@@ -66,5 +66,10 @@ class Api_Call {
 
     return await _Api_Router.Perform_Request_post(
         '${Apiclient.changeNewPass}', someMap);
+  }
+
+  ///GET ALL COMPANIES
+  Future<dynamic> getAllCompanies() async {
+    return await _Api_Router.Perform_Request(Apiclient.allCompanies);
   }
 }
