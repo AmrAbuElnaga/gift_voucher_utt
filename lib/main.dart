@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:giftvoucher/welcome_screens/splash_screen/ui/splash_screen.dart';
 
+import 'homeScreen/ui/companyDetails.dart';
+
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
@@ -10,13 +12,14 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+    SystemChrome.setEnabledSystemUIOverlays([]);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
         primaryColor: const Color(0xffC8FFDA),
         accentColor: const Color(0xffFFFFAB),
-        backgroundColor: const Color(0xffF9F9F9),
+        backgroundColor: const Color(0xffF67A63),
 
         // This is the theme of your application.
         //
@@ -29,7 +32,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: splash_screen(),
+      home: CompanyDetails(),
     );
   }
 }

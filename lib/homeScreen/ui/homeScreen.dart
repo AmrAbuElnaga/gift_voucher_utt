@@ -97,7 +97,7 @@ class homeScreenState extends State<homeScreen> {
                               ),
                             ),
                             Container(
-                              margin: EdgeInsets.only(top: 20,left: 5),
+                              margin: EdgeInsets.only(top: 20, left: 5),
                               child: Row(
                                 children: [
                                   Image.asset(
@@ -221,6 +221,7 @@ class homeScreenState extends State<homeScreen> {
                     ),
                   ),
                   Container(
+                    height: MediaQuery.of(context).size.height - 75,
                     child: Column(
                       children: [
                         Container(
@@ -318,10 +319,45 @@ class homeScreenState extends State<homeScreen> {
                       ),
                     ),
                   ),
+                  Positioned(
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    child: bottomNavigationBar,
+                  ),
                 ],
               );
             }
           }),
+    );
+  }
+
+  Widget get bottomNavigationBar {
+    return ClipRRect(
+      borderRadius: BorderRadius.only(
+        topRight: Radius.circular(40),
+        topLeft: Radius.circular(40),
+      ),
+      child: SizedBox(
+        height: 70,
+        child: BottomNavigationBar(
+          items: [
+            BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.person,
+                  size: 25,
+                ),
+                title: Text('')),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.home, size: 25), title: Text('')),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.shopping_cart, size: 25 ), title: Text('')),
+          ],
+          unselectedItemColor: Colors.grey,
+          selectedItemColor: const Color(0xFFF67A63),
+          showUnselectedLabels: true,
+        ),
+      ),
     );
   }
 }
